@@ -26,7 +26,7 @@ resource "aws_s3_bucket_website_configuration" "www-bucket" {
   }
 }
 
-resource "aws_s3_bucket_acl" "example" {
+resource "aws_s3_bucket_acl" "www-bucket-acl" {
   bucket = aws_s3_bucket.www-bucket.id
   acl    = "public-read"
 }
