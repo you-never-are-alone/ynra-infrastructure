@@ -80,7 +80,7 @@ jobs:
 #        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
     - name: Terraform login
-      run: terraform login
+      run: terraform login -auto-approve
 
     - name: Terraform Init
       run: terraform init
