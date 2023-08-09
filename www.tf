@@ -16,7 +16,6 @@ terraform {
 
 resource "aws_s3_bucket" "www-bucket" {
   bucket = "ynra-www"
-
 }
 
 resource "aws_s3_bucket_website_configuration" "www-bucket" {
@@ -25,4 +24,9 @@ resource "aws_s3_bucket_website_configuration" "www-bucket" {
   index_document {
     suffix = "index.html"
   }
+}
+
+resource "aws_s3_bucket_acl" "example" {
+  bucket = aws_s3_bucket.www-bucket.id
+  acl    = "public-read"
 }
