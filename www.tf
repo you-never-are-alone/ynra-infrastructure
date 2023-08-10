@@ -61,6 +61,11 @@ data "aws_iam_policy_document" "allow_public_access" {
     resources = [
       "${aws_s3_bucket.www-bucket.arn}/*",
     ]
+
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
   }
 }
 
