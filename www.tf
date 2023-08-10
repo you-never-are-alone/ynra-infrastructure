@@ -88,14 +88,16 @@ data "aws_iam_policy_document" "deployer-www" {
     effect = "Allow"
     resources = [
       "${aws_s3_bucket.www-bucket.arn}/*",
+      aws_s3_bucket.www-bucket.arn,
     ]
     actions = [
-      "s3:*",
+      "s3:GetObject", "s3:PutObject", "s3:ListBucket",
     ]
   }
 }
 
 resource "aws_iam_user_policy" "deployer-www" {
+  name   = "deployer-www-policy"
   user   = aws_iam_user.deployer-www.name
   policy = data.aws_iam_policy_document.deployer-www.json
 }
