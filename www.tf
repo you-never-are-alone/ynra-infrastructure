@@ -52,12 +52,7 @@ resource "aws_s3_bucket_acl" "www-bucket-acl" {
   acl = "public-read"
 }
 
-resource "aws_s3_bucket_policy" "www-bucket-policy" {
-  bucket = aws_s3_bucket.www-bucket.id
-  policy = data.aws_iam_policy_document.allow_access_from_another_account
-}
-
-data "aws_iam_policy_document" "allow_access_from_another_account" {
+data "aws_iam_policy_document" "allow_public_access" {
   statement {
     actions = [
       "s3:GetObject",
@@ -68,3 +63,9 @@ data "aws_iam_policy_document" "allow_access_from_another_account" {
     ]
   }
 }
+
+resource "aws_s3_bucket_policy" "www-bucket-policy" {
+  bucket = aws_s3_bucket.www-bucket.id
+  policy = data.aws_iam_policy_document.allow_public_access.json
+}
+
