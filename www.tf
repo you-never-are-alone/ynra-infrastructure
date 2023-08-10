@@ -1,19 +1,3 @@
-provider "aws" {
-  region = "eu-central-1"
-}
-
-terraform {
-  backend "remote" {
-    # The name of your Terraform Cloud organization.
-    organization = "ynra"
-
-    # The name of the Terraform Cloud workspace to store Terraform state files in.
-    workspaces {
-      name = "ynra-infrastructure"
-    }
-  }
-}
-
 resource "aws_s3_bucket" "www-bucket" {
   bucket = "ynra-www"
 }
@@ -92,4 +76,26 @@ resource "aws_route53_record" "www" {
 }
 
 # Deployment user
+#
+# We create a key from this user for the deployment pipeline.
 
+resource "aws_iam_user" "deployer-www" {
+  name = "deployer-www"
+}
+
+data "aws_iam_policy_document" "deployer-www" {
+  statement {
+    effect = "Allow"
+    resources = [
+      "${aws_s3_bucket.www-bucket.arn}/*",
+    ]
+    actions = [
+      "s3:*",
+    ]
+  }
+}
+
+resource "aws_iam_user_policy" "deployer-www" {
+  user   = aws_iam_user.deployer-www.name
+  policy = data.aws_iam_policy_document.deployer-www.json
+}
