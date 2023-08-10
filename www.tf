@@ -74,3 +74,22 @@ resource "aws_s3_bucket_policy" "www-bucket-policy" {
   policy = data.aws_iam_policy_document.allow_public_access.json
 }
 
+# connect with domain
+resource "aws_route53_zone" "main" {
+  name = "ynra.eu"
+}
+
+resource "aws_route53_record" "www" {
+  zone_id = aws_route53_zone.main.id
+  name    = "www.${aws_route53_zone.main.name}"
+  type    = "A"
+
+  alias {
+    evaluate_target_health = true
+    name                   = aws_s3_bucket_website_configuration.www-bucket.website_endpoint
+    zone_id                = aws_s3_bucket.www-bucket.hosted_zone_id
+  }
+}
+
+# Deployment user
+
