@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "www-bucket" {
-  bucket = "ynra-www"
+  bucket = "www.${var.domainName}"
 }
 
 resource "aws_s3_bucket_website_configuration" "www-bucket" {
@@ -58,14 +58,28 @@ resource "aws_s3_bucket_policy" "www-bucket-policy" {
   policy = data.aws_iam_policy_document.allow_public_access.json
 }
 
+#######################################################################
 # connect with domain
+
 resource "aws_route53_zone" "main" {
-  name = "ynra.eu"
+  name = var.domainName
 }
 
 resource "aws_route53_record" "www" {
   zone_id = aws_route53_zone.main.id
-  name    = "www.${aws_route53_zone.main.name}"
+  name    = "www.${var.domainName}"
+  type    = "A"
+
+  alias {
+    evaluate_target_health = false
+    name                   = aws_s3_bucket_website_configuration.www-bucket.website_endpoint
+    zone_id                = aws_s3_bucket.www-bucket.hosted_zone_id
+  }
+}
+
+resource "aws_route53_record" "basic" {
+  zone_id = aws_route53_zone.main.id
+  name    = aws_route53_zone.main.name
   type    = "A"
 
   alias {
