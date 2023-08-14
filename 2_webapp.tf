@@ -73,19 +73,8 @@ resource "aws_route53_record" "app" {
   }
 }
 
-resource "aws_route53_record" "basic-app" {
-  depends_on = [aws_route53_zone.main]
-  zone_id    = aws_route53_zone.main.id
-  name       = aws_route53_zone.main.name
-  type       = "A"
 
-  alias {
-    evaluate_target_health = true
-    name                   = aws_s3_bucket_website_configuration.app-bucket.website_endpoint
-    zone_id                = aws_s3_bucket.app-bucket.hosted_zone_id
-  }
-}
-
+#######################################################################
 # Deployment user
 #
 # We create a key from this user for the deployment pipeline.
