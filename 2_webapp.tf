@@ -74,9 +74,10 @@ resource "aws_route53_record" "app" {
 }
 
 resource "aws_route53_record" "basic-app" {
-  zone_id = aws_route53_zone.main.id
-  name    = aws_route53_zone.main.name
-  type    = "A"
+  depends_on = [aws_route53_zone.main]
+  zone_id    = aws_route53_zone.main.id
+  name       = aws_route53_zone.main.name
+  type       = "A"
 
   alias {
     evaluate_target_health = true
