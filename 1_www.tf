@@ -55,7 +55,7 @@ data "aws_iam_policy_document" "allow_public_access" {
 
 resource "aws_s3_bucket_policy" "www-bucket-policy" {
   bucket = aws_s3_bucket.www-bucket.id
-  policy = data.aws_iam_policy_document.allow_public_access.json
+  policy = data.aws_iam_policy_document.allow_public_access_app.json
 }
 
 #######################################################################
