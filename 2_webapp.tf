@@ -68,7 +68,7 @@ resource "aws_route53_record" "app" {
 
   alias {
     evaluate_target_health = false
-    name                   = aws_s3_bucket_website_configuration.app-bucket.website_endpoint
+    name                   = aws_s3_bucket_website_configuration.app-bucket.website_domain
     zone_id                = aws_s3_bucket.app-bucket.hosted_zone_id
   }
 }

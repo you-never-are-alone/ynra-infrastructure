@@ -72,7 +72,7 @@ resource "aws_route53_record" "www" {
 
   alias {
     evaluate_target_health = false
-    name                   = aws_s3_bucket_website_configuration.www-bucket.website_endpoint
+    name                   = aws_s3_bucket_website_configuration.www-bucket.website_domain
     zone_id                = aws_s3_bucket.www-bucket.hosted_zone_id
   }
 }
